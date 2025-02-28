@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     entry: './src/index.js',
@@ -13,6 +14,10 @@ module.exports = {
                 test: /\.css$/,
                 use: ['style-loader', 'css-loader'],
             },
+            {
+                test: /\.(png|jpe?g|gif|svg|ico)$/i,
+                type: 'asset/resource',
+              },
         ],
     },
     plugins: [
@@ -22,6 +27,29 @@ module.exports = {
             chunks: ['index'],
             filename: 'index.html'
         }),
+        new HtmlWebpackPlugin({
+            template: './src/projects.html',
+            inject: true,
+            chunks: ['index'],
+            filename: 'projects.html'
+          }),
+          new HtmlWebpackPlugin({
+            template: './src/about.html',
+            inject: true,
+            chunks: ['index'],
+            filename: 'about.html'
+          }),
+          new HtmlWebpackPlugin({
+            template: './src/tasks.html',
+            inject: true,
+            chunks: ['index'],
+            filename: 'tasks.html'
+          }),
+          new CopyWebpackPlugin({
+            patterns: [
+              { from: 'src/images', to: 'images' },
+            ],
+          }),
     ],
     devServer: {
         static: {
